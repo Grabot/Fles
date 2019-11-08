@@ -1,8 +1,0 @@
-django
-gunicorn
-requests
-flask
-flask_wtf
-flask-sqlalchemy
-flask-migrate
-flask-login
