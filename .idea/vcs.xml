@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="VcsDirectoryMappings">
+    <mapping directory="$PROJECT_DIR$" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/bucket_api_heroku" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/flask_by_example" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/grabot-hello" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/grabot-web-example" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/grabot_hello" vcs="Git" />
+  </component>
+</project>
