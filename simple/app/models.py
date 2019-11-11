@@ -54,7 +54,7 @@ class User(UserMixin, db.Model):
     # TODO @Sander: generate avatars and let the user be able to include their own image.
     def avatar(self, size):
         digest = md5(self.email.lower().encode('utf-8')).hexdigest()
-        return 'https://avatars3.githubusercontent.com/u/1746047?s=460&v=4'.format(digest, size)
+        return 'https://mangolang.org/mango_logo.png'.format(digest, size)
 
     # A user can follow other users, here the logic for following and unfollowing is handled.
     def follow(self, user):
