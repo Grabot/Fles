@@ -8,8 +8,16 @@ from hashlib import md5
 
 
 @login.user_loader
-def load_user(id):
-    return User.query.get(int(id))
+def load_user(user_id):
+    return User.query.get(int(user_id))
+
+
+# A user can follow another user, so we identify an association table.
+# Here the information is stored which user follows which other user.
+followers = db.Table('followers',
+    db.Column('follower_id', db.Integer, db.ForeignKey('user.id')),
+    db.Column('followed_id', db.Integer, db.ForeignKey('user.id'))
+)
 
 
 class User(UserMixin, db.Model):
@@ -18,7 +26,7 @@ class User(UserMixin, db.Model):
     The user has a unique id, username and email
     The password is hashed and it can be checked.
     All the posts are stored in the database with a foreign key to user.
-    Each user has an avatar.
+    Each user has an avatar, at the beginning it is a standard avatar and the user can change it.
     """
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(64), index=True, unique=True)
@@ -27,6 +35,12 @@ class User(UserMixin, db.Model):
     posts = db.relationship('Post', backref='author', lazy='dynamic')
     about_me = db.Column(db.String(140))
     last_seen = db.Column(db.DateTime, default=datetime.utcnow)
+    # For each user we store which other user this user follows.
+    followed = db.relationship(
+        'User', secondary=followers,
+        primaryjoin=(followers.c.follower_id == id),
+        secondaryjoin=(followers.c.followed_id == id),
+        backref=db.backref('followers', lazy='dynamic'), lazy='dynamic')
 
     def __repr__(self):
         return '<User {}>'.format(self.username)
@@ -40,8 +54,27 @@ class User(UserMixin, db.Model):
     # TODO @Sander: generate avatars and let the user be able to include their own image.
     def avatar(self, size):
         digest = md5(self.email.lower().encode('utf-8')).hexdigest()
-        return 'https://avatars3.githubusercontent.com/u/1746047?s=460&v=4'.format(
-            digest, size)
+        return 'https://avatars3.githubusercontent.com/u/1746047?s=460&v=4'.format(digest, size)
+
+    # A user can follow other users, here the logic for following and unfollowing is handled.
+    def follow(self, user):
+        if not self.is_following(user):
+            self.followed.append(user)
+
+    def unfollow(self, user):
+        if self.is_following(user):
+            self.followed.remove(user)
+
+    def is_following(self, user):
+        return self.followed.filter(
+            followers.c.followed_id == user.id).count() > 0
+
+    def followed_posts(self):
+        followed = Post.query.join(
+            followers, (followers.c.followed_id == Post.user_id)).filter(
+                followers.c.follower_id == self.id)
+        own = Post.query.filter_by(user_id=self.id)
+        return followed.union(own).order_by(Post.timestamp.desc())
 
 
 class Post(db.Model):
