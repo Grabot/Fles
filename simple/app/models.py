@@ -13,6 +13,13 @@ def load_user(id):
 
 
 class User(UserMixin, db.Model):
+    """
+    The User that is stored in the database.
+    The user has a unique id, username and email
+    The password is hashed and it can be checked.
+    All the posts are stored in the database with a foreign key to user.
+    Each user has an avatar.
+    """
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(64), index=True, unique=True)
     email = db.Column(db.String(64), index=True, unique=True)
@@ -30,6 +37,7 @@ class User(UserMixin, db.Model):
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
 
+    # TODO @Sander: generate avatars and let the user be able to include their own image.
     def avatar(self, size):
         digest = md5(self.email.lower().encode('utf-8')).hexdigest()
         return 'https://avatars3.githubusercontent.com/u/1746047?s=460&v=4'.format(
@@ -37,6 +45,10 @@ class User(UserMixin, db.Model):
 
 
 class Post(db.Model):
+    """
+    The posts of the user
+    The posts have a unique id and a foreign key to the user that posted it.
+    """
     id = db.Column(db.Integer, primary_key=True)
     body = db.Column(db.String(140))
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)

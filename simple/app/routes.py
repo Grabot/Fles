@@ -21,6 +21,10 @@ from datetime import datetime
 @app.route('/index')
 @login_required
 def index():
+    """
+    The homepage of a user. Here, for instance, the posts he made are shown
+    """
+    # TODO @Sander: Create a way for users to post their own stuff and remove this 'posts' placeholder
     posts = [
         {
             'author': {'username': 'Mark'},
@@ -36,6 +40,12 @@ def index():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    """
+    The login page. here the get and posts calls are handled using the flask_login package
+    So going to the login page and the validation and loggin in.
+    If the log in information is not valid it shows an error and you can try again
+    If the log in information is correct the user goes to the main page of the user.
+    """
     if current_user.is_authenticated:
         return redirect(url_for('index'))
     form = LoginForm()
@@ -54,12 +64,20 @@ def login():
 
 @app.route('/logout')
 def logout():
+    """
+    If the user selects 'logout' the logging out is done. This is handled here using the flask_login package
+    """
     logout_user()
     return redirect(url_for('index'))
 
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
+    """
+    Here the registration is handled.
+    The username, email and possword are validated and check if they don't already exist
+    If the registration is succesfull the succes message is shown and the data is included in the database.
+    """
     if current_user.is_authenticated:
         return redirect(url_for('index'))
     form = RegistrationForm()
@@ -76,6 +94,11 @@ def register():
 @app.route('/user/<username>')
 @login_required
 def user(username):
+    """
+    Here the profile page of the logged in user is handled.
+    Here the posts made by the user are shown along with the avatar.
+    The user can edit his information with the edit information link.
+    """
     user = User.query.filter_by(username=username).first_or_404()
     posts = [
         {'author': user, 'body': 'Test post #1'},
@@ -85,6 +108,9 @@ def user(username):
 
 @app.before_request
 def before_request():
+    """
+    This is executed right before the view function. Here we set the last_seen variable for the user.
+    """
     if current_user.is_authenticated:
         current_user.last_seen = datetime.utcnow()
         db.session.commit()
@@ -93,6 +119,10 @@ def before_request():
 @app.route('/edit_profile', methods=['GET', 'POST'])
 @login_required
 def edit_profile():
+    """
+    Here the edit profile page is handled.
+    The user can change it's username and it's about page.
+    """
     form = EditProfileForm()
     if form.validate_on_submit():
         current_user.username = form.username.data
@@ -103,5 +133,5 @@ def edit_profile():
     elif request.method == 'GET':
         form.username.data = current_user.username
         form.about_me.data = current_user.about_me
-    return render_template('edit_profile.html', title='Edit Profile',   form=form)
+    return render_template('edit_profile.html', title='Edit Profile', form=form)
 

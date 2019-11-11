@@ -13,18 +13,29 @@ from app.models import User
 
 
 def validate_username(username):
+    """
+    The user can choose a username when it registers.
+    If the username is already taken we give a validation error.
+    """
     user = User.query.filter_by(username=username.data).first()
     if user is not None:
         raise ValidationError('Please use a different username.')
 
 
 def validate_email(email):
+    """
+    The user can choose an email when it registers.
+    If the email is already taken we give a validation error.
+    """
     user = User.query.filter_by(email=email.data).first()
     if user is not None:
         raise ValidationError('Please use a different email address.')
 
 
 class LoginForm(FlaskForm):
+    """
+    The information of the login form.
+    """
     username = StringField('Username', validators=[DataRequired()])
     password = PasswordField('Password', validators=[DataRequired()])
     remember_me = BooleanField('Remember Me')
@@ -32,6 +43,9 @@ class LoginForm(FlaskForm):
 
 
 class RegistrationForm(FlaskForm):
+    """
+    The information of the Registration form.
+    """
     username = StringField('Username', validators=[DataRequired()])
     email = StringField('Email', validators=[DataRequired(), Email()])
     password = PasswordField('Password', validators=[DataRequired()])
@@ -40,6 +54,9 @@ class RegistrationForm(FlaskForm):
 
 
 class EditProfileForm(FlaskForm):
+    """
+    The information of the edit profile page.
+    """
     username = StringField('Username', validators=[DataRequired()])
     about_me = TextAreaField('About me', validators=[Length(min=0, max=140)])
     submit = SubmitField('Submit')
