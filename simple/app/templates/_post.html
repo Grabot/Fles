@@ -10,9 +10,11 @@ This is html for a single post. This is included for every post of that user.
             </td>
             <td>
                 {% set user_link %}
-                <a href="{{ url_for('user', username=post.author.username) }}">
-                    {{ post.author.username }}
-                </a>
+                <span class="user_popup">
+                    <a href="{{ url_for('user', username=post.author.username) }}">
+                        {{ post.author.username }}
+                    </a>
+                </span>
                 {% endset %}
                 {{ _('%(username)s said %(when)s', username=user_link, when=moment(post.timestamp).fromNow()) }}
                 <br>
