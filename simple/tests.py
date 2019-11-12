@@ -21,7 +21,7 @@ class UserModelCase(unittest.TestCase):
 
     def test_avatar(self):
         u = User(username='john', email='john@example.com')
-        self.assertEqual(u.avatar(128), 'https://avatars3.githubusercontent.com/u/1746047?s=460&v=4')
+        self.assertEqual(u.avatar(128), 'https://mangolang.org/mango_logo.png')
 
     def test_follow(self):
         u1 = User(username='john', email='john@example.com')
