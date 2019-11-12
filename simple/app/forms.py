@@ -10,6 +10,7 @@ from wtforms.validators import Email
 from wtforms.validators import ValidationError
 from wtforms.validators import Length
 from app.models import User
+from flask_babel import lazy_gettext as _l
 
 
 def validate_username(username):
@@ -36,7 +37,7 @@ class LoginForm(FlaskForm):
     """
     The information of the login form.
     """
-    username = StringField('Username', validators=[DataRequired()])
+    username = StringField(_l('Username'), validators=[DataRequired()])
     password = PasswordField('Password', validators=[DataRequired()])
     remember_me = BooleanField('Remember Me')
     submit = SubmitField('Sign In')

@@ -5,7 +5,7 @@ The main page of the user. This is what is shown when the user logs in.
 {% import 'bootstrap/wtf.html' as wtf %}
 
 {% block app_content %}
-    <h1>Hi, {{ current_user.username }}!</h1>
+    <h1>{{ _('Hi, %(username)s!', username=current_user.username) }}</h1>
     {% if form %}
         {{ wtf.quick_form(form) }}
     <br>

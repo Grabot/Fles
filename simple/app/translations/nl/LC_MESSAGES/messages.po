@@ -1,0 +1,51 @@
+# Dutch translations for PROJECT.
+# Copyright (C) 2019 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2019.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2019-11-12 11:49+0100\n"
+"PO-Revision-Date: 2019-11-12 11:51+0100\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: nl\n"
+"Language-Team: nl <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.7.0\n"
+
+#: app/__init__.py:28
+msgid "Please log in to access this page"
+msgstr "log toch is in man!"
+
+#: app/forms.py:40
+msgid "Username"
+msgstr "Naam van je moeder"
+
+#: app/routes.py:38
+msgid "Your post is now live!"
+msgstr "zit je weer te zeiken?"
+
+#: app/routes.py:165
+#, python-format
+msgid "User %(username)s not found."
+msgstr "gebruiker %(username)s konden we niet vinden"
+
+#: app/templates/404.html:8
+msgid "File Not Found"
+msgstr "bestand is er nie"
+
+#: app/templates/_post.html:17
+#, python-format
+msgid "%(username)s said %(when)s"
+msgstr "%(username)s zat te janken %(when)s"
+
+#: app/templates/index.html:8
+#, python-format
+msgid "Hi, %(username)s!"
+msgstr "Doei! %(username)s!"
+
