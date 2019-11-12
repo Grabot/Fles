@@ -12,7 +12,7 @@ This is html for a single post. This is included for every post of that user.
                 <a href="{{ url_for('user', username=post.author.username) }}">
                     {{ post.author.username }}
                 </a>
-                says:
+                said {{ moment(post.timestamp).fromNow() }}:
                 <br>
                 {{ post.body }}
             </td>

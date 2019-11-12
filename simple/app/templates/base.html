@@ -54,3 +54,8 @@ This is html for the base which is included on every page. It will show the top 
         {% block app_content %}{% endblock %}
     </div>
 {% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+    {{ moment.include_moment() }}
+{% endblock %}
