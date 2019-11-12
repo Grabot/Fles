@@ -1,14 +1,20 @@
 <!--
 This is html for a single post. This is included for every post of that user.
 -->
-<table>
-    <tr valign="top">
-        <td><img src="{{ post.author.avatar(36) }}"></td>
-        <td>
-            <a href="{{ url_for('user', username=post.author.username) }}">
-                {{ post.author.username }}
-            </a>
-            says:<br>{{ post.body }}
-        </td>
-    </tr>
-</table>
+<table class="table table-hover">
+        <tr>
+            <td width="70px">
+                <a href="{{ url_for('user', username=post.author.username) }}">
+                    <img src="{{ post.author.avatar(70) }}" />
+                </a>
+            </td>
+            <td>
+                <a href="{{ url_for('user', username=post.author.username) }}">
+                    {{ post.author.username }}
+                </a>
+                says:
+                <br>
+                {{ post.body }}
+            </td>
+        </tr>
+    </table>
