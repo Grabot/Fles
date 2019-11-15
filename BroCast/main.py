@@ -38,3 +38,7 @@ def get_text_prediction():
 
     return jsonify({'you sent this': json['text']})
 
+
+if __name__ == '__main__':
+    app.run()
+
