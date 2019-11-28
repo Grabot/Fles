@@ -11,6 +11,7 @@ import json
 from app import app
 from time import time
 
+
 @login.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
@@ -19,9 +20,9 @@ def load_user(user_id):
 # A user can follow another user, so we identify an association table.
 # Here the information is stored which user follows which other user.
 followers = db.Table('followers',
-    db.Column('follower_id', db.Integer, db.ForeignKey('user.id')),
-    db.Column('followed_id', db.Integer, db.ForeignKey('user.id'))
-)
+                     db.Column('follower_id', db.Integer, db.ForeignKey('user.id')),
+                     db.Column('followed_id', db.Integer, db.ForeignKey('user.id'))
+                     )
 
 
 class User(UserMixin, db.Model):
@@ -46,7 +47,8 @@ class User(UserMixin, db.Model):
         secondaryjoin=(followers.c.followed_id == id),
         backref=db.backref('followers', lazy='dynamic'), lazy='dynamic')
     messages_sent = db.relationship('Message', foreign_keys='Message.sender_id', backref='author', lazy='dynamic')
-    messages_received = db.relationship('Message', foreign_keys='Message.recipient_id', backref='recipient', lazy='dynamic')
+    messages_received = db.relationship('Message', foreign_keys='Message.recipient_id', backref='recipient',
+                                        lazy='dynamic')
     last_message_read_time = db.Column(db.DateTime)
     notifications = db.relationship('Notification', backref='user', lazy='dynamic')
 
@@ -62,7 +64,8 @@ class User(UserMixin, db.Model):
     # TODO @Sander: generate avatars and let the user be able to include their own image.
     def avatar(self, size):
         digest = md5(self.email.lower().encode('utf-8')).hexdigest()
-        return 'https://mangolang.org/mango_logo.png'.format(digest, size)
+        # The project works best with an image with size 128x128. We use this placeholder site to achieve this.
+        return 'https://via.placeholder.com/128'.format(digest, size)
 
     # A user can follow other users, here the logic for following and unfollowing is handled.
     def follow(self, user):
@@ -80,7 +83,7 @@ class User(UserMixin, db.Model):
     def followed_posts(self):
         followed = Post.query.join(
             followers, (followers.c.followed_id == Post.user_id)).filter(
-                followers.c.follower_id == self.id)
+            followers.c.follower_id == self.id)
         own = Post.query.filter_by(user_id=self.id)
         return followed.union(own).order_by(Post.timestamp.desc())
 
@@ -92,8 +95,7 @@ class User(UserMixin, db.Model):
     @staticmethod
     def verify_reset_password_token(token):
         try:
-            id = jwt.decode(token, app.config['SECRET_KEY'],
-                            algorithms=['HS256'])['reset_password']
+            id = jwt.decode(token, app.config['SECRET_KEY'], algorithms=['HS256'])['reset_password']
         except:
             return
         return User.query.get(id)
